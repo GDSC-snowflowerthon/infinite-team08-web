@@ -2,25 +2,19 @@ import React from "react";
 import GlobalStyle from "../styles/GlobalStyle";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
-
-function Home(props) {
-  const navigate = useNavigate();
-
-  const gotoTakePicture = () => {
-    navigate("/takePicture");
-  };
-
+function LoadingPage(props) {
   return (
     <>
       <GlobalStyle />
-      <MainPageDiv onClick={gotoTakePicture}>
+      <MainPageDiv>
         <StyledLogo />
         <FirstText>
-          시각장애인과 비장애인이<br />서로 바라보는 세상을 이해하는 그날까지<br />서로가 보는 다른 세상을<br />영원히 보여드립니다
+          사진을 분석하고 있습니다.
+          <br />. . .
+          <br />
+          잠시만 기다려주세요.
         </FirstText>
-        <AttentionText>진행하려면 화면을 클릭하세요</AttentionText>
       </MainPageDiv>
     </>
   );
@@ -52,10 +46,4 @@ const FirstText = styled.div`
   line-height: 3;
 `;
 
-const AttentionText = styled.div`
-color: lightgrey;
-font-weight: bold;
-margin-top: 50px;
-`;
-
-export default Home;
+export default LoadingPage;
