@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CameraComponent from "./pages/CameraComponent";
+import Home from "./pages/Home";
 
 
 
@@ -9,7 +9,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<CameraComponent />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </Router>
     </>
