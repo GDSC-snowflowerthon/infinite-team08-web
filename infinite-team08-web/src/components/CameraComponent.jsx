@@ -1,8 +1,10 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const CameraComponent = () => {
+  const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null); // 찍은 사진을 저장할 상태
 
@@ -14,6 +16,24 @@ const CameraComponent = () => {
   const reCapture = useCallback(() => {
     setImageSrc(null); // 이미지 상태 초기화하여 다시 촬영할 수 있도록 함
   }, []);
+
+  useEffect(() => {
+    let timer;
+    if (imageSrc) {
+      timer = setTimeout(() => {
+        navigate('/loadingpage');
+        const textToRead = "사진을 분석하고 있습니다.. . . 잠시만 기다려주세요.";
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.rate = 0.9; // 음성 속도 설정
+        synth.speak(utterance); // 음성 재생
+      }, 10000); // 10초 뒤에 /loadingpage로 이동
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [imageSrc, navigate]);
 
   return (
     <CameraContainer>

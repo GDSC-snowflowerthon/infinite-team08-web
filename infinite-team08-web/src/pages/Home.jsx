@@ -10,16 +10,23 @@ function Home(props) {
 
   const gotoTakePicture = () => {
     if (doneSpeech) {
+      const textToRead = "설명을 원하는 사진을, 찍어주세요. 사진을 찍은 뒤, 자동으로 10초뒤 화면이 전환되어, 사진이 분석됩니다. 다시 사진을 찍고싶으시면, 다시 찍기 버튼을 눌러주세요.";
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(textToRead);
+      utterance.rate = 0.9; // 음성 속도 설정
+      synth.speak(utterance); // 음성 재생
+  
       navigate("/takePicture");
     }
   };
+  
 
   const handleSpeech = () => {
     const textToRead =
-      "시각장애인과, 비장애인이, 서로 바라보는 세상을, 이해하는 그날까지, 서로가 보는, 다른 세상을, 영원히 보여드립니다, 진행하려면, 화면을, 클릭하세요,";
+      "시각장애인과, 비장애인이, 서로 바라보는 세상을, 이해하는 그날까지. 서로가 보는, 다른 세상을, 영원히 보여드립니다. 진행하려면, 화면을, 클릭하세요.";
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.rate = 0.8; // 음성 속도를 느리게 설정
+    utterance.rate = 0.9; // 음성 속도를 느리게 설정
     utterance.onend = () => {
       setDoneSpeech(true);
     };

@@ -11,7 +11,7 @@ function TakePicture(props) {
         <CameraComponent />
         <FirstText>
           설명을 원하는 사진을 찍어주세요. <br />
-          사진을 찍은 뒤, 자동으로 화면이 전환됩니다.
+          사진을 찍은 뒤, 10초 뒤 사진이 분석됩니다.
         </FirstText>
       </MainPageDiv>
     </>
