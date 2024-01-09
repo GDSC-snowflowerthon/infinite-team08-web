@@ -84,11 +84,11 @@ const StyledLogo = styled(Logo)`
 
 const FirstText = styled.div`
   color: white;
-  font-size: 1.3vw;
   font-weight: bold;
   text-align: center;
   margin: 20px;
   line-height: 3;
+  font-size: 22px;
 `;
 
 const AttentionText = styled.div`

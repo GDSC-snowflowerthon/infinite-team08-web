@@ -6,21 +6,20 @@ import { useNavigate } from "react-router-dom";
 
 function ShowTwoPictures(props) {
   const navigate = useNavigate();
-  const { imageUrl } = useContext(ImageContext);
+  const { imageUrl, changedImg } = useContext(ImageContext);
 
   const onClick = () => {
     navigate(`/`);
-  }
+  };
 
   return (
     <>
       <GlobalStyle />
       <MainPageDiv onClick={onClick}>
-        {imageUrl && <CapturedImage src={imageUrl} alt="Captured" />} { /* 기존사진 */ }
+        {imageUrl && <CapturedImage src={changedImg} alt="Changed" />}
+        {imageUrl && <CapturedImage src={imageUrl} alt="Captured" />}
 
-        <FirstText>
-          처음으로 돌아가려면 화면을 클릭하세요.
-        </FirstText>
+        <FirstText>처음으로 돌아가려면 화면을 클릭하세요.</FirstText>
       </MainPageDiv>
     </>
   );
@@ -34,12 +33,12 @@ const MainPageDiv = styled.div`
   background-color: black;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 `;
 
 const CapturedImage = styled.img`
-  width: 100%;
+  width: 90%;
 `;
 
 const FirstText = styled.div`
