@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GlobalStyle from "../styles/GlobalStyle";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function LoadingPage(props) {
   const navigate = useNavigate();
@@ -17,6 +18,23 @@ function LoadingPage(props) {
 
     navigate(`/showTwoPictures`);
   };
+
+
+  //(1) s3 업로드 url 받는 api
+  useEffect(() => {
+    const getpresignedurl = async () => {
+      try {
+        const response = await axios.get('http://ec2-13-125-184-136.ap-northeast-2.compute.amazonaws.com/presigned-url/upload?filename=data.jpg');
+        const presinedUrl = response.data;
+
+        console.log(presinedUrl);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getpresignedurl();
+  }, []);
 
   return (
     <>
