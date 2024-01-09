@@ -1,8 +1,8 @@
 import React from "react";
-import Home from "./component/Home";
-import Take_Picture from "./component/Take_Picture";
-import Loading from "./component/Loading";
-import Analysis from "./component/Analysis";
+import Home from "./pages/Home";
+import Take_Picture from "./pages/Take_Picture";
+import Loading from "./pages/Loading";
+import Analysis from "./pages/Analysis";
 import { BrowserRouter as Router, Route, Routes, BrowserRouter, Link } from "react-router-dom";
 
 
