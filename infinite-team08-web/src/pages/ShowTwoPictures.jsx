@@ -1,33 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import GlobalStyle from "../styles/GlobalStyle";
-import { ReactComponent as Logo } from "../assets/logo.svg";
 import styled from "styled-components";
+import { ImageContext } from "../context/ImageContext";
 import { useNavigate } from "react-router-dom";
 
-function LoadingPage(props) {
+function ShowTwoPictures(props) {
   const navigate = useNavigate();
+  const { imageUrl } = useContext(ImageContext);
 
   const onClick = () => {
-    const textToRead =
-      "사진이 분석되었습니다. 처음으로 돌아가려면 화면을 클릭하세요.";
-    const synth = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.rate = 0.9; // 음성 속도 설정
-    synth.speak(utterance); // 음성 재생
-
-    navigate(`/showTwoPictures`);
-  };
+    navigate(`/`);
+  }
 
   return (
     <>
       <GlobalStyle />
       <MainPageDiv onClick={onClick}>
-        <StyledLogo />
+        {imageUrl && <CapturedImage src={imageUrl} alt="Captured" />} { /* 기존사진 */ }
+
         <FirstText>
-          사진을 분석하고 있습니다.
-          <br />. . .
-          <br />
-          잠시만 기다려주세요.
+          처음으로 돌아가려면 화면을 클릭하세요.
         </FirstText>
       </MainPageDiv>
     </>
@@ -46,9 +38,8 @@ const MainPageDiv = styled.div`
   align-items: center;
 `;
 
-const StyledLogo = styled(Logo)`
+const CapturedImage = styled.img`
   width: 100%;
-  margin-bottom: 40px;
 `;
 
 const FirstText = styled.div`
@@ -60,4 +51,4 @@ const FirstText = styled.div`
   line-height: 3;
 `;
 
-export default LoadingPage;
+export default ShowTwoPictures;
