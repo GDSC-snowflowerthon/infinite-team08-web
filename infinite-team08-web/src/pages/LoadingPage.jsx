@@ -16,7 +16,7 @@ function LoadingPage(props) {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          "http://ec2-13-125-184-136.ap-northeast-2.compute.amazonaws.com/image_to_text",
+          "https://www.seunghan.shop/image_to_text",
           "data.jpg",
           {
             headers: {
@@ -38,7 +38,7 @@ function LoadingPage(props) {
       try {
         const encodedDescription = encodeURIComponent(description);
         const response = await axios.get(
-          `http://ec2-13-125-184-136.ap-northeast-2.compute.amazonaws.com/generate?prompt=${encodedDescription}`
+          `https://www.seunghan.shop/generate?prompt=${encodedDescription}`
         );
         console.log("GET 요청 성공:", response.data);
         setChangedImg(response.data.image_url);

@@ -47,7 +47,7 @@ const CameraComponent = () => {
       const blob = new Blob([byteArray], { type: 'image/jpeg' });
       const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
   
-      const response = await axios.get('http://ec2-13-125-184-136.ap-northeast-2.compute.amazonaws.com/presigned-url/upload?filename=data.jpg');
+      const response = await axios.get('https://www.seunghan.shop/presigned-url/upload?filename=data.jpg');
   
       console.log(response.data)
 
