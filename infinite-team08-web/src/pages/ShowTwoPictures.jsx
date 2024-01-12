@@ -56,7 +56,7 @@ const ChangedImage = styled.img`
 const ChangedImageContainer = styled.div`
   width: 100%;
   height: auto;
-  filter: blur(5px);
+  filter: blur(7px);
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -76,7 +76,7 @@ const GradientOverlay = styled.div`
   background: radial-gradient(
     circle at center,
     rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.9) 70%
+    rgba(0, 0, 0, 0.9) 60%
   );
 `;
 
