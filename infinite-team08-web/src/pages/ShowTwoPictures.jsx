@@ -55,7 +55,7 @@ const MainPageDiv = styled.div`
 
 const ChangedImage = styled.img`
   width: 90%;
-  height: auto;
+  height: 30%;
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -63,7 +63,7 @@ const ChangedImage = styled.img`
 
 const ChangedImageContainer = styled.div`
   width: 90%;
-  height: auto;
+  height: 30%;
   filter: blur(7px);
   position: relative;
   overflow: hidden;
