@@ -116,7 +116,7 @@ const AttentionText = styled.div`
   justify-content: center; // 중요: 수직 가운데 정렬을 위해 추가
   border-radius: 50px;
   width: 327px;
-  height: 41px;
+  height: 50px;
 `;
 
 const ChangedButton = styled.text`

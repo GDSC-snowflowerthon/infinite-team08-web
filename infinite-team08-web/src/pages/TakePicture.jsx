@@ -2,17 +2,21 @@ import React from "react";
 import GlobalStyle from "../styles/GlobalStyle";
 import CameraComponent from "../components/CameraComponent";
 import styled from "styled-components";
+import { ReactComponent as SmallLogo } from "../assets/smalllogo.svg";
 
 function TakePicture(props) {
   return (
     <>
       <GlobalStyle />
       <MainPageDiv>
-        <CameraComponent />
+        <StyledSmallLogo />
         <FirstText>
-          설명을 원하는 사진을 찍어주세요. <br />
-          사진을 찍은 뒤, 10초 뒤 사진이 분석됩니다.
+          사진을 찍은 뒤, 10초 후에
+          <br />
+          자동으로 화면이 전환됩니다
         </FirstText>
+        <CameraComponent />
+
       </MainPageDiv>
     </>
   );
@@ -30,13 +34,21 @@ const MainPageDiv = styled.div`
   align-items: center;
 `;
 
+const StyledSmallLogo = styled(SmallLogo)`
+  height: 48px;
+  margin-top: -50px;
+  margin-bottom: 20px;
+`;
+
 const FirstText = styled.div`
-  color: white;
-  font-size: x-large;
+  color: lightgray;
+  font-size: large;
   font-weight: bold;
   text-align: center;
   margin: 20px;
-  line-height: 3;
+  line-height: 2;
 `;
+
+
 
 export default TakePicture;
