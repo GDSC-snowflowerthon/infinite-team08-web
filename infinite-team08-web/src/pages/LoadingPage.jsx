@@ -9,7 +9,7 @@ import axios from "axios";
 function LoadingPage(props) {
   const navigate = useNavigate();
 
-  const { description, setDescription } =
+  const { description, setDescription, translatedDescription, setTransalteDescription } =
     useContext(ImageContext);
 
   useEffect(() => {
@@ -33,39 +33,39 @@ function LoadingPage(props) {
     fetchData();
   }, []);
 
-  /* 사진 받아오는 부분 */
-  // useEffect(() => {
-  //   const sendGetRequest = async () => {
-  //     try {
-  //       const encodedDescription = encodeURIComponent(description);
-  //       const response = await axios.get(
-  //         `https://www.seunghan.shop/generate?prompt=${encodedDescription}`
-  //       );
-  //       console.log("GET 요청 성공:", response.data);
-  //       setChangedImg(response.data.image_url);
-  //     } catch (error) {
-  //       console.error("GET 요청 실패:", error);
-  //     }
-  //   };
+  /* 영어 한글로 번역하는 부분 */
+  useEffect(() => {
+    const translateRequest = async () => {
+      try {
+        const encodedDescription = encodeURIComponent(description);
+        const response = await axios.get(
+          `https://www.seunghan.shop/translate?prompt=${encodedDescription}`
+        );
+        console.log("GET 요청 성공:", response.data);
+        setTransalteDescription(response.data.image_url);
+      } catch (error) {
+        console.error("GET 요청 실패:", error);
+      }
+    };
 
-  //   if (description) {
-  //     sendGetRequest();
-  //   }
-  // }, [description]);
+    if (description) {
+      translateRequest();
+    }
+  }, [description]);
 
   useEffect(() => {
-    if (description) {
+    if (translatedDescription) {
+      navigate(`/showTwoPictures`);
       const textToRead =
         "사진이 분석되었습니다. 설명은 다음과 같습니다.";
       const synth = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(textToRead);
-      const descriptionUtterance = new SpeechSynthesisUtterance(description);
+      const descriptionUtterance = new SpeechSynthesisUtterance(translatedDescription);
       utterance.rate = 0.9; // 음성 속도 설정
       synth.speak(utterance); // 음성 재생
       synth.speak(descriptionUtterance); // 음성 재생
-      navigate(`/showTwoPictures`);
     }
-  }, [description, navigate]);
+  }, [translatedDescription, navigate]);
 
   return (
     <>
