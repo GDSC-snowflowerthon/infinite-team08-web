@@ -17,11 +17,32 @@ const CameraComponent = () => {
   const [imageSrc, setImageSrc] = useState(null);
   const { imageUrl, setImageUrl } = useContext(ImageContext);
 
-  useEffect(() => {
-    if (!webcamRef.current) {
-      webcamRef.current = new Webcam(); // Webcam 컴포넌트의 새 인스턴스를 생성하여 webcamRef에 할당합니다.
+  // 모바일 여부 확인 함수
+  const isMobile = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  };
+
+  // 초기 facingMode 결정 함수
+  const getInitialFacingMode = useCallback(() => {
+    if (isMobile()) {
+      // 모바일일 경우
+      return "environment"; // 후면 카메라
+    } else {
+      // 웹일 경우
+      return "user"; // 전면 카메라
     }
   }, []);
+
+  useEffect(() => {
+    if (!webcamRef.current) {
+      // videoConstraints를 사용하여 카메라 설정
+      webcamRef.current = new Webcam({
+        videoConstraints: {
+          facingMode: getInitialFacingMode(), // 초기 facingMode 설정
+        },
+      });
+    }
+  }, [getInitialFacingMode]);
 
   const capture = useCallback(async () => {
     const capturedImageSrc = webcamRef.current.getScreenshot();
