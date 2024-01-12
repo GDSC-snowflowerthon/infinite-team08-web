@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useCallback,
-  useState,
-  useEffect,
-  useContext,
-} from "react";
+import React, { useRef, useCallback, useState, useEffect, useContext } from "react";
 import Webcam from "react-webcam";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -106,7 +100,7 @@ const CameraComponent = () => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          style={{ width: "100%", height:"50%" }}
+          style={{ width: "100%", height: "auto" }} // 높이를 자동으로 조절하도록 설정
         />
       )}
       {!imageSrc ? (
@@ -123,7 +117,6 @@ const CameraComponent = () => {
 };
 
 const CameraContainer = styled.div`
-
   max-width: 460px;
   margin: 0 auto;
 `;
@@ -154,7 +147,7 @@ const ReCameraButton = styled.button`
 
 const CapturedImage = styled.img`
   width: 100%;
-  height: 50%;
+  height: auto; // 높이를 자동으로 조절하도록 설정
 `;
 
 export default CameraComponent;
