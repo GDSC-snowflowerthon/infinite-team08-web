@@ -15,11 +15,16 @@ const CameraComponent = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
+  const [isFrontCamera, setIsFrontCamera] = useState(true); // 추가된 부분
   const { imageUrl, setImageUrl } = useContext(ImageContext);
+
+  const toggleCamera = useCallback(() => {
+    setIsFrontCamera((prevIsFrontCamera) => !prevIsFrontCamera);
+  }, []);
 
   // 모바일 여부 확인 함수
   const isMobile = () => {
-    return /Mobi|Android/i.test(navigator.userAgent);
+    return window.innerWidth <= 600; // 예시: 너비가 600px 이하면 모바일로 간주
   };
 
   // 초기 facingMode 결정 함수
@@ -36,23 +41,24 @@ const CameraComponent = () => {
   useEffect(() => {
     if (!webcamRef.current) {
       const initialFacingMode = getInitialFacingMode();
-      const isUserFacing = initialFacingMode === 'user';
-      
+      const isUserFacing = initialFacingMode === "user";
+
       const videoConstraints = {
-        facingMode: isMobile() ? "environment" : initialFacingMode, // 모바일인 경우 후면 카메라, 웹인 경우 초기 facingMode
+        facingMode: isMobile()
+          ? "environment"
+          : isFrontCamera
+          ? "user"
+          : "environment", // 수정된 부분
         width: isUserFacing ? 640 : 640,
         height: isUserFacing ? 480 : 480,
         aspectRatio: 4 / 3,
       };
-    
+
       webcamRef.current = new Webcam({
         videoConstraints,
       });
     }
-  }, [getInitialFacingMode]);
-  
-  
-  
+  }, [getInitialFacingMode, isFrontCamera]); // 수정된 부분
 
   const capture = useCallback(async () => {
     const capturedImageSrc = webcamRef.current.getScreenshot();
@@ -141,7 +147,16 @@ const CameraComponent = () => {
         />
       )}
       {!imageSrc ? (
-        <CameraButton onClick={capture}>촬영</CameraButton>
+        <>
+          <CameraWrapper>
+            <CameraButton onClick={capture}>촬영</CameraButton>
+            {isMobile() ? ( // isMobile 함수를 호출하여 모바일 여부를 확인
+              <CameraButton onClick={toggleCamera}>전면/후면<br/>전환</CameraButton>
+            ) : (
+              "" // 모바일이 아닌 경우에는 빈 문자열 반환
+            )}
+          </CameraWrapper>
+        </>
       ) : (
         <ReCameraButton onClick={reCapture}>
           다시
@@ -170,6 +185,7 @@ const CameraButton = styled.button`
   background-color: #00ff6d;
   margin-top: 60px;
   color: black;
+  line-height: 1.5; // 줄 사이 간격 조절
 `;
 
 const ReCameraButton = styled.button`
@@ -186,6 +202,12 @@ const ReCameraButton = styled.button`
 
 const CapturedImage = styled.img`
   width: 100%;
+`;
+
+const CameraWrapper = styled.div`
+  display: flex;
+  flex-direction: row; // 버튼을 가로로 나열
+  margin-top: 20px; // 여유 여백
 `;
 
 export default CameraComponent;
