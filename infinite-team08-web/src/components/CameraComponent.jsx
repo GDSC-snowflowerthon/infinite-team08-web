@@ -15,59 +15,30 @@ const CameraComponent = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
-  const [isFrontCamera, setIsFrontCamera] = useState(true);
   const { imageUrl, setImageUrl } = useContext(ImageContext);
-
-  const toggleCamera = useCallback(() => {
-    setIsFrontCamera((prevIsFrontCamera) => !prevIsFrontCamera);
-  }, []);
-
-  const isMobile = () => {
-    return window.innerWidth <= 600;
-  };
-
-  const getInitialFacingMode = useCallback(() => {
-    if (isMobile()) {
-      return isFrontCamera ? "user" : "environment"; // 수정된 부분
-    } else {
-      return "user";
-    }
-  }, [isFrontCamera]);
 
   useEffect(() => {
     if (!webcamRef.current) {
-      const initialFacingMode = getInitialFacingMode();
-      const isUserFacing = initialFacingMode === "user";
-
-      const videoConstraints = {
-        facingMode: { exact: "environment" },
-        width: isUserFacing ? 640 : 640,
-        height: isUserFacing ? 480 : 480,
-        aspectRatio: 4 / 3,
-      };
-
-      webcamRef.current = new Webcam({
-        videoConstraints,
-      });
+      webcamRef.current = new Webcam(); // Webcam 컴포넌트의 새 인스턴스를 생성하여 webcamRef에 할당합니다.
     }
-  }, [getInitialFacingMode]);
+  }, []);
 
   const capture = useCallback(async () => {
     const capturedImageSrc = webcamRef.current.getScreenshot();
-    setImageSrc(capturedImageSrc);
-    setImageUrl(capturedImageSrc);
+    setImageSrc(capturedImageSrc); // 찍은 사진을 상태에 저장
+    setImageUrl(capturedImageSrc); // 이미지를 ImageContext에 저장
   }, [setImageUrl]);
 
   const reCapture = useCallback(() => {
-    setImageSrc(null);
-    setImageUrl(null);
+    setImageSrc(null); // 이미지 상태 초기화하여 다시 촬영할 수 있도록 함
+    setImageUrl(null); // 이미지 URL을 null로 설정하여 업데이트
   }, [setImageUrl]);
 
   const uploadImage = async () => {
     try {
       const base64Prefix = "data:image/jpeg;base64,";
       const base64Image = imageUrl.startsWith(base64Prefix)
-        ? imageUrl.slice(base64Prefix.length)
+        ? imageUrl.slice(base64Prefix.length) // "data:image/jpeg;base64," 부분 제거
         : imageUrl;
 
       const byteCharacters = atob(base64Image);
@@ -85,11 +56,14 @@ const CameraComponent = () => {
         "https://www.seunghan.shop/presigned-url/upload?filename=data.jpg"
       );
 
-      const presignedUrl = response.data;
+      console.log(response.data);
 
+      const presignedUrl = response.data; // presigned URL 얻기
+
+      // presigned URL로 PUT 요청하여 이미지 업로드
       const imageResponse = await fetch(presignedUrl, {
         method: "PUT",
-        body: file,
+        body: file, // 이미지 파일 직접 전달
         headers: {
           "Content-Type": "image/jpeg",
         },
@@ -111,9 +85,9 @@ const CameraComponent = () => {
           "사진을 분석하고 있습니다.. . . 잠시만 기다려주세요.";
         const synth = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(textToRead);
-        utterance.rate = 0.9;
-        synth.speak(utterance);
-      }, 10000);
+        utterance.rate = 0.9; // 음성 속도 설정
+        synth.speak(utterance); // 음성 재생
+      }, 10000); // 10초 뒤에 /loadingpage로 이동
 
       console.log(imageUrl);
     }
@@ -136,18 +110,7 @@ const CameraComponent = () => {
         />
       )}
       {!imageSrc ? (
-        <>
-          <CameraWrapper>
-            <CameraButton onClick={capture}>촬영</CameraButton>
-            {isMobile() ? (
-              <CameraButton onClick={toggleCamera}>
-                {isFrontCamera ? "전면" : "후면"} 전환
-              </CameraButton>
-            ) : (
-              ""
-            )}
-          </CameraWrapper>
-        </>
+        <CameraButton onClick={capture}>촬영</CameraButton>
       ) : (
         <ReCameraButton onClick={reCapture}>
           다시
@@ -175,8 +138,6 @@ const CameraButton = styled.button`
   font-weight: 700;
   background-color: #00ff6d;
   margin-top: 60px;
-  color: black;
-  line-height: 1.5;
 `;
 
 const ReCameraButton = styled.button`
@@ -187,18 +148,12 @@ const ReCameraButton = styled.button`
   font-size: 25px;
   border-radius: 50%;
   font-weight: 700;
-  background-color: black;
+  background-color: white;
   margin-top: 60px;
 `;
 
 const CapturedImage = styled.img`
   width: 100%;
-`;
-
-const CameraWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 20px;
 `;
 
 export default CameraComponent;
