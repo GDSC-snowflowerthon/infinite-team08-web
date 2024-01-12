@@ -117,7 +117,7 @@ const FirstText = styled.div`
   text-align: center;
   margin: 20px;
   line-height: 3;
-  margin-bottom: 50px;
+
 `;
 
 export default LoadingPage;
