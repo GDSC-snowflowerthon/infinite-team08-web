@@ -35,14 +35,21 @@ const CameraComponent = () => {
 
   useEffect(() => {
     if (!webcamRef.current) {
-      // videoConstraints를 사용하여 카메라 설정
+      const initialFacingMode = getInitialFacingMode();
+      const isUserFacing = initialFacingMode === 'user';
+  
+      const videoConstraints = {
+        facingMode: initialFacingMode,
+        width: isUserFacing ? 640 : 640, // facingMode에 따라 폭 설정
+        height: isUserFacing ? 480 : 480, // facingMode에 따라 높이 설정
+      };
+  
       webcamRef.current = new Webcam({
-        videoConstraints: {
-          facingMode: getInitialFacingMode(), // 초기 facingMode 설정
-        },
+        videoConstraints,
       });
     }
   }, [getInitialFacingMode]);
+  
 
   const capture = useCallback(async () => {
     const capturedImageSrc = webcamRef.current.getScreenshot();
@@ -127,7 +134,7 @@ const CameraComponent = () => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          style={{ width: "100%", height: "40%" }}
+          style={{ width: "100%" }}
         />
       )}
       {!imageSrc ? (
@@ -159,6 +166,7 @@ const CameraButton = styled.button`
   font-weight: 700;
   background-color: #00ff6d;
   margin-top: 60px;
+  color: black;
 `;
 
 const ReCameraButton = styled.button`
@@ -169,13 +177,12 @@ const ReCameraButton = styled.button`
   font-size: 25px;
   border-radius: 50%;
   font-weight: 700;
-  background-color: white;
+  background-color: black;
   margin-top: 60px;
 `;
 
 const CapturedImage = styled.img`
   width: 100%;
-  height: 40%
 `;
 
 export default CameraComponent;
