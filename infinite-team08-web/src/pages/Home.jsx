@@ -56,11 +56,15 @@ function Home(props) {
           <br />
           서로 바라보는 세상을 이해하는 그날까지
           <br />
+        </FirstText>
+        <SecondText>
           서로가 보는 다른 세상을
           <br />
           영원히 이어드립니다
-        </FirstText>
-        <AttentionText>진행하려면 화면을 클릭하세요</AttentionText>
+        </SecondText>
+        <AttentionText>
+          <ChangedButton>진행하려면 화면을 클릭하세요 </ChangedButton>
+        </AttentionText>
       </MainPageDiv>
     </>
   );
@@ -83,18 +87,44 @@ const StyledLogo = styled(Logo)`
 `;
 
 const FirstText = styled.div`
-  color: white;
+  color: lightgray;
   font-weight: bold;
   text-align: center;
   margin: 20px;
   line-height: 3;
   font-size: 22px;
+  display: flex;
+`;
+
+const SecondText = styled.div`
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px;
+  line-height: 3;
+  font-size: 24px;
+  display: flex;
 `;
 
 const AttentionText = styled.div`
-  color: lightgrey;
+  background-color: #00ff6d;
   font-weight: bold;
   margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // 중요: 수직 가운데 정렬을 위해 추가
+  border-radius: 50px;
+  width: 327px;
+  height: 41px;
+`;
+
+const ChangedButton = styled.text`
+  color: black;
+  text-align: center; // 중요: 수평 가운데 정렬을 위해 추가
+  line-height: 41px; // 중요: 수직 가운데 정렬을 위해 추가 (높이와 같게 설정)
+  font-size: larger;
+  font-weight: bolder;
 `;
 
 export default Home;
