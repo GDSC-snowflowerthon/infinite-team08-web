@@ -17,8 +17,8 @@ function LoadingPage(props) {
     setTransalteDescription,
   } = useContext(ImageContext);
 
-  // 이미지를 text로 바꿔주는 API
   useEffect(() => {
+    // 이미지를 text로 바꿔주는 API
     const fetchData = async () => {
       try {
         const response = await axios.post(
@@ -37,12 +37,16 @@ function LoadingPage(props) {
         console.error("image_to_text 요청 실패:", error);
       }
     };
-
-    fetchData();
-  }, []);
-
+  
+    // description이 없을 때만 fetchData 실행
+    if (!description) {
+      fetchData();
+    }
+  }, [description]); // description이 변경될 때만 실행
+  
   // 영어 한글로 번역하는 부분
   useEffect(() => {
+    // description이 있고, translatedDescription이 없을 때만 translateRequest 실행
     const translateRequest = async () => {
       try {
         const encodedDescription = encodeURIComponent(description);
@@ -50,16 +54,17 @@ function LoadingPage(props) {
           `https://www.seunghan.shop/translate?prompt=${encodedDescription}`
         );
         console.log("Translation 요청 성공:", response.data);
-        setTransalteDescription(response.data.image_url);
+        setTransalteDescription(response.data.translated_text);
       } catch (error) {
         console.error("Translation 요청 실패:", error);
       }
     };
-
-    if (description) {
+  
+    if (description && !translatedDescription) {
       translateRequest();
     }
-  }, [description]);
+  }, [description, translatedDescription]); // description 또는 translatedDescription이 변경될 때 실행
+  
 
   useEffect(() => {
     if (translatedDescription) {
@@ -102,7 +107,7 @@ const MainPageDiv = styled.div`
 `;
 
 const StyledSmallLogo = styled(SmallLogo)`
-  width: 20%;
+  width: 100%;
 `;
 
 const FirstText = styled.div`
