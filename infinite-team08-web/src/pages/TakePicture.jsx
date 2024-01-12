@@ -11,7 +11,7 @@ function TakePicture(props) {
       <MainPageDiv>
         <StyledSmallLogo />
         <FirstText>
-          사진을 찍은 뒤, 10초 후에
+          사진을 찍은 뒤, 5초 후에
           <br />
           자동으로 화면이 전환됩니다
         </FirstText>

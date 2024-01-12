@@ -87,7 +87,7 @@ const CameraComponent = () => {
         const utterance = new SpeechSynthesisUtterance(textToRead);
         utterance.rate = 0.9; // 음성 속도 설정
         synth.speak(utterance); // 음성 재생
-      }, 10000); // 10초 뒤에 /loadingpage로 이동
+      }, 5000); // 10초 뒤에 /loadingpage로 이동
 
       console.log(imageUrl);
     }
