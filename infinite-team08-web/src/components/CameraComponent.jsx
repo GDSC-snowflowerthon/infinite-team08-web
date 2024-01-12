@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useCallback,
-  useState,
-  useEffect,
-  useContext,
-} from "react";
+import React, { useRef, useCallback, useState, useEffect, useContext } from "react";
 import Webcam from "react-webcam";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -15,28 +9,24 @@ const CameraComponent = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
-  const [isFrontCamera, setIsFrontCamera] = useState(true); // 추가된 부분
+  const [isFrontCamera, setIsFrontCamera] = useState(true);
   const { imageUrl, setImageUrl } = useContext(ImageContext);
 
   const toggleCamera = useCallback(() => {
     setIsFrontCamera((prevIsFrontCamera) => !prevIsFrontCamera);
   }, []);
 
-  // 모바일 여부 확인 함수
   const isMobile = () => {
-    return window.innerWidth <= 600; // 예시: 너비가 600px 이하면 모바일로 간주
+    return window.innerWidth <= 600;
   };
 
-  // 초기 facingMode 결정 함수
   const getInitialFacingMode = useCallback(() => {
     if (isMobile()) {
-      // 모바일일 경우
-      return "environment"; // 후면 카메라
+      return isFrontCamera ? "user" : "environment"; // 수정된 부분
     } else {
-      // 웹일 경우
-      return "user"; // 전면 카메라
+      return "user";
     }
-  }, []);
+  }, [isFrontCamera]);
 
   useEffect(() => {
     if (!webcamRef.current) {
@@ -44,11 +34,7 @@ const CameraComponent = () => {
       const isUserFacing = initialFacingMode === "user";
 
       const videoConstraints = {
-        facingMode: isMobile()
-          ? "environment"
-          : isFrontCamera
-          ? "user"
-          : "environment", // 수정된 부분
+        facingMode: initialFacingMode,
         width: isUserFacing ? 640 : 640,
         height: isUserFacing ? 480 : 480,
         aspectRatio: 4 / 3,
@@ -58,24 +44,24 @@ const CameraComponent = () => {
         videoConstraints,
       });
     }
-  }, [getInitialFacingMode, isFrontCamera]); // 수정된 부분
+  }, [getInitialFacingMode]);
 
   const capture = useCallback(async () => {
     const capturedImageSrc = webcamRef.current.getScreenshot();
-    setImageSrc(capturedImageSrc); // 찍은 사진을 상태에 저장
-    setImageUrl(capturedImageSrc); // 이미지를 ImageContext에 저장
+    setImageSrc(capturedImageSrc);
+    setImageUrl(capturedImageSrc);
   }, [setImageUrl]);
 
   const reCapture = useCallback(() => {
-    setImageSrc(null); // 이미지 상태 초기화하여 다시 촬영할 수 있도록 함
-    setImageUrl(null); // 이미지 URL을 null로 설정하여 업데이트
+    setImageSrc(null);
+    setImageUrl(null);
   }, [setImageUrl]);
 
   const uploadImage = async () => {
     try {
       const base64Prefix = "data:image/jpeg;base64,";
       const base64Image = imageUrl.startsWith(base64Prefix)
-        ? imageUrl.slice(base64Prefix.length) // "data:image/jpeg;base64," 부분 제거
+        ? imageUrl.slice(base64Prefix.length)
         : imageUrl;
 
       const byteCharacters = atob(base64Image);
@@ -93,14 +79,11 @@ const CameraComponent = () => {
         "https://www.seunghan.shop/presigned-url/upload?filename=data.jpg"
       );
 
-      console.log(response.data);
+      const presignedUrl = response.data;
 
-      const presignedUrl = response.data; // presigned URL 얻기
-
-      // presigned URL로 PUT 요청하여 이미지 업로드
       const imageResponse = await fetch(presignedUrl, {
         method: "PUT",
-        body: file, // 이미지 파일 직접 전달
+        body: file,
         headers: {
           "Content-Type": "image/jpeg",
         },
@@ -122,9 +105,9 @@ const CameraComponent = () => {
           "사진을 분석하고 있습니다.. . . 잠시만 기다려주세요.";
         const synth = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(textToRead);
-        utterance.rate = 0.9; // 음성 속도 설정
-        synth.speak(utterance); // 음성 재생
-      }, 10000); // 10초 뒤에 /loadingpage로 이동
+        utterance.rate = 0.9;
+        synth.speak(utterance);
+      }, 10000);
 
       console.log(imageUrl);
     }
@@ -150,10 +133,12 @@ const CameraComponent = () => {
         <>
           <CameraWrapper>
             <CameraButton onClick={capture}>촬영</CameraButton>
-            {isMobile() ? ( // isMobile 함수를 호출하여 모바일 여부를 확인
-              <CameraButton onClick={toggleCamera}>전면/후면<br/>전환</CameraButton>
+            {isMobile() ? (
+              <CameraButton onClick={toggleCamera}>
+                {isFrontCamera ? "전면" : "후면"} 전환
+              </CameraButton>
             ) : (
-              "" // 모바일이 아닌 경우에는 빈 문자열 반환
+              ""
             )}
           </CameraWrapper>
         </>
@@ -185,7 +170,7 @@ const CameraButton = styled.button`
   background-color: #00ff6d;
   margin-top: 60px;
   color: black;
-  line-height: 1.5; // 줄 사이 간격 조절
+  line-height: 1.5;
 `;
 
 const ReCameraButton = styled.button`
@@ -206,8 +191,8 @@ const CapturedImage = styled.img`
 
 const CameraWrapper = styled.div`
   display: flex;
-  flex-direction: row; // 버튼을 가로로 나열
-  margin-top: 20px; // 여유 여백
+  flex-direction: row;
+  margin-top: 20px;
 `;
 
 export default CameraComponent;
