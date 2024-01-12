@@ -64,7 +64,6 @@ function LoadingPage(props) {
       translateRequest();
     }
   }, [description, translatedDescription]); // description 또는 translatedDescription이 변경될 때 실행
-  
 
   useEffect(() => {
     if (translatedDescription) {
@@ -107,7 +106,7 @@ const MainPageDiv = styled.div`
 `;
 
 const StyledSmallLogo = styled(SmallLogo)`
-  width: 100%;
+  width: 20%;
 `;
 
 const FirstText = styled.div`
