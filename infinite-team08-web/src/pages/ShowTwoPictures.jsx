@@ -91,7 +91,6 @@ const GradientOverlay = styled.div`
 const AttentionText = styled.div`
   background-color: #00ff6d;
   font-weight: 500;
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
