@@ -8,6 +8,9 @@ import test1 from "../assets/img/test1.png"
 import test2 from "../assets/img/test2.png"
 import test3 from "../assets/img/test3.png"
 import test4 from "../assets/img/test4.png"
+import test5 from "../assets/img/test5.png"
+import test6 from "../assets/img/test6.png"
+import test7 from "../assets/img/test7.png"
 
 
 function Gallery () {
@@ -42,12 +45,18 @@ function Gallery () {
           <div><img src={post.thumbnailUrl} /></div>
         </li>
       ))} */}
-      <Imagebox>
-        <Image alt="test" src={test1} onClick={handleSpeak}/>
+      <ImageContainer>
+        <Imagebox>
+        <Image alt="test" src={test1} onClick={handleSpeak} />
         <Image alt="test" src={test2} />
         <Image alt="test" src={test3} />
         <Image alt="test" src={test4} />
+        <Image alt="test" src={test5} />
+        <Image alt="test" src={test6} />
+        <Image alt="test" src={test7} />
       </Imagebox>
+      </ImageContainer>
+
 
       </MainPageDiv>
     </>
@@ -67,6 +76,11 @@ const MainPageDiv = styled.div`
   align-items: center;
 `;
 
+const ImageContainer = styled.div `
+  overflow-y: auto;
+  max-height: 700px;
+`
+
 const Imagebox =styled.div `
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -75,6 +89,7 @@ const Imagebox =styled.div `
 
 const Image = styled.img `
   width: 100%;
+  height: 100%;
 `
 
 const StyledLogo = styled(Logo)`
