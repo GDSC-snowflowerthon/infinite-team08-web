@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function ShowTwoPictures(props) {
   const navigate = useNavigate();
-  const { imageUrl, changedImg } = useContext(ImageContext);
+  const { imageUrl } = useContext(ImageContext);
 
   const onClick = () => {
     navigate(`/`);
@@ -16,8 +16,15 @@ function ShowTwoPictures(props) {
     <>
       <GlobalStyle />
       <MainPageDiv onClick={onClick}>
-        {imageUrl && <CapturedImage src={changedImg} alt="Changed" />}
-        {imageUrl && <CapturedImage src={imageUrl} alt="Captured" />}
+        {imageUrl && (
+          <>
+            <ChangedImageContainer>
+              <ChangedImage src={imageUrl} alt="Changed" />
+              <GradientOverlay />
+            </ChangedImageContainer>
+            <CapturedImage src={imageUrl} alt="Captured" />
+          </>
+        )}
 
         <FirstText>처음으로 돌아가려면 화면을 클릭하세요.</FirstText>
       </MainPageDiv>
@@ -27,18 +34,50 @@ function ShowTwoPictures(props) {
 
 const MainPageDiv = styled.div`
   height: 100vh;
-  width: 100%;
+  width: 90%;
   max-width: 460px;
   margin: 0 auto;
-  background-color: black;
+  background-color: #000; /* 흰 배경으로 변경 (확인용) */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  position: relative; /* position 속성 추가 */
 `;
 
+const ChangedImage = styled.img`
+  width: 100%;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+`;
+
+const ChangedImageContainer = styled.div`
+  width: 100%;
+  height: auto;
+  filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+`;
+
+
 const CapturedImage = styled.img`
-  width: 90%;
+  width: 100%;
+`;
+
+const GradientOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.9) 70%
+  );
 `;
 
 const FirstText = styled.div`

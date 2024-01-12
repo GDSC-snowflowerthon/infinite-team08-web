@@ -9,11 +9,10 @@ import ShowTwoPictures from "./pages/ShowTwoPictures";
 function App() {
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
-  const [changedImg, setChangedImg] = useState("");
 
   return (
     <>
-      <ImageContext.Provider value={{ imageUrl, setImageUrl, description, setDescription, changedImg, setChangedImg }}>
+      <ImageContext.Provider value={{ imageUrl, setImageUrl, description, setDescription }}>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />

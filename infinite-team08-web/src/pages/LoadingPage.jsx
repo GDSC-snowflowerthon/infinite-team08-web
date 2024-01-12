@@ -9,7 +9,7 @@ import axios from "axios";
 function LoadingPage(props) {
   const navigate = useNavigate();
 
-  const { description, setDescription, changedImg, setChangedImg } =
+  const { description, setDescription } =
     useContext(ImageContext);
 
   useEffect(() => {
@@ -33,27 +33,28 @@ function LoadingPage(props) {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const sendGetRequest = async () => {
-      try {
-        const encodedDescription = encodeURIComponent(description);
-        const response = await axios.get(
-          `https://www.seunghan.shop/generate?prompt=${encodedDescription}`
-        );
-        console.log("GET 요청 성공:", response.data);
-        setChangedImg(response.data.image_url);
-      } catch (error) {
-        console.error("GET 요청 실패:", error);
-      }
-    };
+  /* 사진 받아오는 부분 */
+  // useEffect(() => {
+  //   const sendGetRequest = async () => {
+  //     try {
+  //       const encodedDescription = encodeURIComponent(description);
+  //       const response = await axios.get(
+  //         `https://www.seunghan.shop/generate?prompt=${encodedDescription}`
+  //       );
+  //       console.log("GET 요청 성공:", response.data);
+  //       setChangedImg(response.data.image_url);
+  //     } catch (error) {
+  //       console.error("GET 요청 실패:", error);
+  //     }
+  //   };
 
+  //   if (description) {
+  //     sendGetRequest();
+  //   }
+  // }, [description]);
+
+  useEffect(() => {
     if (description) {
-      sendGetRequest();
-    }
-  }, [description]);
-
-  useEffect(() => {
-    if (changedImg) {
       const textToRead =
         "사진이 분석되었습니다. 설명은 다음과 같습니다.";
       const synth = window.speechSynthesis;
@@ -64,7 +65,7 @@ function LoadingPage(props) {
       synth.speak(descriptionUtterance); // 음성 재생
       navigate(`/showTwoPictures`);
     }
-  }, [changedImg, navigate]);
+  }, [description, navigate]);
 
   return (
     <>
