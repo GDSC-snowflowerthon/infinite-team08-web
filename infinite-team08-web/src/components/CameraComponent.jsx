@@ -1,9 +1,15 @@
-import React, { useRef, useCallback, useState, useEffect, useContext } from "react";
+import React, {
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+  useContext,
+} from "react";
 import Webcam from "react-webcam";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ImageContext } from "../context/ImageContext";
-import axios from 'axios';
+import axios from "axios";
 
 const CameraComponent = () => {
   const navigate = useNavigate();
@@ -28,46 +34,47 @@ const CameraComponent = () => {
     setImageUrl(null); // 이미지 URL을 null로 설정하여 업데이트
   }, [setImageUrl]);
 
-
   const uploadImage = async () => {
     try {
-      const base64Prefix = 'data:image/jpeg;base64,';
+      const base64Prefix = "data:image/jpeg;base64,";
       const base64Image = imageUrl.startsWith(base64Prefix)
         ? imageUrl.slice(base64Prefix.length) // "data:image/jpeg;base64," 부분 제거
         : imageUrl;
-  
+
       const byteCharacters = atob(base64Image);
       const byteNumbers = new Array(byteCharacters.length);
-  
+
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-  
+
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: 'image/jpeg' });
-      const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
-  
-      const response = await axios.get('https://www.seunghan.shop/presigned-url/upload?filename=data.jpg');
-  
-      console.log(response.data)
+      const blob = new Blob([byteArray], { type: "image/jpeg" });
+      const file = new File([blob], "image.jpg", { type: "image/jpeg" });
+
+      const response = await axios.get(
+        "https://www.seunghan.shop/presigned-url/upload?filename=data.jpg"
+      );
+
+      console.log(response.data);
 
       const presignedUrl = response.data; // presigned URL 얻기
-  
+
       // presigned URL로 PUT 요청하여 이미지 업로드
       const imageResponse = await fetch(presignedUrl, {
-        method: 'PUT',
+        method: "PUT",
         body: file, // 이미지 파일 직접 전달
         headers: {
-          'Content-Type': 'image/jpeg',
+          "Content-Type": "image/jpeg",
         },
       });
-  
-      console.log('이미지 업로드 성공:', imageResponse);
+
+      console.log("이미지 업로드 성공:", imageResponse);
     } catch (error) {
-      console.error('이미지 업로드 실패:', error);
+      console.error("이미지 업로드 실패:", error);
     }
   };
-  
+
   useEffect(() => {
     let timer;
     if (imageSrc) {
@@ -103,9 +110,13 @@ const CameraComponent = () => {
         />
       )}
       {!imageSrc ? (
-        <CameraButton onClick={capture}>사진 찍기</CameraButton>
+        <CameraButton onClick={capture}>촬영</CameraButton>
       ) : (
-        <CameraButton onClick={reCapture}>다시 찍기</CameraButton>
+        <ReCameraButton onClick={reCapture}>
+          다시
+          <br />
+          찍기
+        </ReCameraButton>
       )}
     </CameraContainer>
   );
@@ -120,11 +131,25 @@ const CameraContainer = styled.div`
 const CameraButton = styled.button`
   display: block;
   margin: 10px auto;
-  width: 130px;
-  height: 130px;
+  width: 150px;
+  height: 150px;
   font-size: 25px;
   border-radius: 50%;
-  font-weight: 900;
+  font-weight: 700;
+  background-color: #00ff6d;
+  margin-top: 60px;
+`;
+
+const ReCameraButton = styled.button`
+  display: block;
+  margin: 10px auto;
+  width: 150px;
+  height: 150px;
+  font-size: 25px;
+  border-radius: 50%;
+  font-weight: 700;
+  background-color: white;
+  margin-top: 60px;
 `;
 
 const CapturedImage = styled.img`

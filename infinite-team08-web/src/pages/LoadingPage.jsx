@@ -1,17 +1,23 @@
 import React, { useEffect, useContext } from "react";
 import GlobalStyle from "../styles/GlobalStyle";
-import { ReactComponent as Logo } from "../assets/logo.svg";
+import { ReactComponent as SmallLogo } from "../assets/smalllogo.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ImageContext } from "../context/ImageContext";
 import axios from "axios";
+import AnimatedSVGs from "../components/ShowLoading";
 
 function LoadingPage(props) {
   const navigate = useNavigate();
 
-  const { description, setDescription, changedImg, setChangedImg } =
-    useContext(ImageContext);
+  const {
+    description,
+    setDescription,
+    translatedDescription,
+    setTransalteDescription,
+  } = useContext(ImageContext);
 
+  // 이미지를 text로 바꿔주는 API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,59 +30,60 @@ function LoadingPage(props) {
             },
           }
         );
+        console.log("image_to_text 요청 성공:", response.data);
         setDescription(response.data);
       } catch (error) {
         console.error(error);
+        console.error("image_to_text 요청 실패:", error);
       }
     };
 
     fetchData();
   }, []);
 
+  // 영어 한글로 번역하는 부분
   useEffect(() => {
-    const sendGetRequest = async () => {
+    const translateRequest = async () => {
       try {
         const encodedDescription = encodeURIComponent(description);
         const response = await axios.get(
-          `https://www.seunghan.shop/generate?prompt=${encodedDescription}`
+          `https://www.seunghan.shop/translate?prompt=${encodedDescription}`
         );
-        console.log("GET 요청 성공:", response.data);
-        setChangedImg(response.data.image_url);
+        console.log("Translation 요청 성공:", response.data);
+        setTransalteDescription(response.data.image_url);
       } catch (error) {
-        console.error("GET 요청 실패:", error);
+        console.error("Translation 요청 실패:", error);
       }
     };
 
     if (description) {
-      sendGetRequest();
+      translateRequest();
     }
   }, [description]);
 
   useEffect(() => {
-    if (changedImg) {
-      const textToRead =
-        "사진이 분석되었습니다. 설명은 다음과 같습니다.";
+    if (translatedDescription) {
+      navigate(`/showTwoPictures`);
+      const textToRead = "사진이 분석되었습니다. 설명은 다음과 같습니다.";
       const synth = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(textToRead);
-      const descriptionUtterance = new SpeechSynthesisUtterance(description);
+      const descriptionUtterance = new SpeechSynthesisUtterance(
+        translatedDescription
+      );
       utterance.rate = 0.9; // 음성 속도 설정
       synth.speak(utterance); // 음성 재생
       synth.speak(descriptionUtterance); // 음성 재생
-      navigate(`/showTwoPictures`);
     }
-  }, [changedImg, navigate]);
+  }, [translatedDescription, navigate]);
 
   return (
     <>
       <GlobalStyle />
       <MainPageDiv>
-        <StyledLogo />
-        <FirstText>
-          사진을 분석하고 있습니다.
-          <br />. . .
-          <br />
-          잠시만 기다려주세요.
-        </FirstText>
+        <StyledSmallLogo />
+        <FirstText>사진을 분석하고 있습니다.</FirstText>
+        <AnimatedSVGs />
+        <FirstText>잠시만 기다려주세요.</FirstText>
       </MainPageDiv>
     </>
   );
@@ -94,9 +101,8 @@ const MainPageDiv = styled.div`
   align-items: center;
 `;
 
-const StyledLogo = styled(Logo)`
-  width: 100%;
-  margin-bottom: 40px;
+const StyledSmallLogo = styled(SmallLogo)`
+  width: 20%;
 `;
 
 const FirstText = styled.div`
@@ -106,6 +112,7 @@ const FirstText = styled.div`
   text-align: center;
   margin: 20px;
   line-height: 3;
+  margin-bottom: 50px;
 `;
 
 export default LoadingPage;
