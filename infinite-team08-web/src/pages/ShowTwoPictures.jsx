@@ -8,6 +8,7 @@ import { ReactComponent as SmallLogo } from "../assets/smalllogo.svg";
 
 function ShowTwoPictures(props) {
   const navigate = useNavigate();
+
   const { imageUrl, setTransalteDescription, setImageUrl, setDescription } = useContext(ImageContext);
 
   const onClick = () => {
@@ -42,7 +43,7 @@ function ShowTwoPictures(props) {
 
 const MainPageDiv = styled.div`
   height: 100vh;
-  width: 90%;
+  width: 100%;
   max-width: 460px;
   margin: 0 auto;
   background-color: #000; /* 흰 배경으로 변경 (확인용) */
@@ -90,7 +91,7 @@ const GradientOverlay = styled.div`
 const AttentionText = styled.div`
   background-color: #00ff6d;
   font-weight: 500;
-  margin-top: 50px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
