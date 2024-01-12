@@ -114,7 +114,7 @@ const AttentionText = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center; // 중요: 수직 가운데 정렬을 위해 추가
-  border-radius: 50px;
+  border-radius: 30px;
   width: 327px;
   height: 50px;
 `;

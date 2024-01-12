@@ -1,16 +1,21 @@
 import React, { useEffect, useContext } from "react";
 import GlobalStyle from "../styles/GlobalStyle";
-import { ReactComponent as Logo } from "../assets/logo.svg";
+import { ReactComponent as SmallLogo } from "../assets/smalllogo.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ImageContext } from "../context/ImageContext";
 import axios from "axios";
+import AnimatedSVGs from "../components/ShowLoading";
 
 function LoadingPage(props) {
   const navigate = useNavigate();
 
-  const { description, setDescription, translatedDescription, setTransalteDescription } =
-    useContext(ImageContext);
+  const {
+    description,
+    setDescription,
+    translatedDescription,
+    setTransalteDescription,
+  } = useContext(ImageContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,9 +29,11 @@ function LoadingPage(props) {
             },
           }
         );
+        console.log("image_to_text 요청 성공:", response.data);
         setDescription(response.data);
       } catch (error) {
         console.error(error);
+        console.error("image_to_text 요청 실패:", error);
       }
     };
 
@@ -41,10 +48,10 @@ function LoadingPage(props) {
         const response = await axios.get(
           `https://www.seunghan.shop/translate?prompt=${encodedDescription}`
         );
-        console.log("GET 요청 성공:", response.data);
+        console.log("Translation 요청 성공:", response.data);
         setTransalteDescription(response.data.image_url);
       } catch (error) {
-        console.error("GET 요청 실패:", error);
+        console.error("Translation 요청 실패:", error);
       }
     };
 
@@ -56,11 +63,12 @@ function LoadingPage(props) {
   useEffect(() => {
     if (translatedDescription) {
       navigate(`/showTwoPictures`);
-      const textToRead =
-        "사진이 분석되었습니다. 설명은 다음과 같습니다.";
+      const textToRead = "사진이 분석되었습니다. 설명은 다음과 같습니다.";
       const synth = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(textToRead);
-      const descriptionUtterance = new SpeechSynthesisUtterance(translatedDescription);
+      const descriptionUtterance = new SpeechSynthesisUtterance(
+        translatedDescription
+      );
       utterance.rate = 0.9; // 음성 속도 설정
       synth.speak(utterance); // 음성 재생
       synth.speak(descriptionUtterance); // 음성 재생
@@ -71,13 +79,10 @@ function LoadingPage(props) {
     <>
       <GlobalStyle />
       <MainPageDiv>
-        <StyledLogo />
-        <FirstText>
-          사진을 분석하고 있습니다.
-          <br />. . .
-          <br />
-          잠시만 기다려주세요.
-        </FirstText>
+        <StyledSmallLogo />
+        <FirstText>사진을 분석하고 있습니다.</FirstText>
+        <AnimatedSVGs />
+        <FirstText>잠시만 기다려주세요.</FirstText>
       </MainPageDiv>
     </>
   );
@@ -95,9 +100,8 @@ const MainPageDiv = styled.div`
   align-items: center;
 `;
 
-const StyledLogo = styled(Logo)`
-  width: 100%;
-  margin-bottom: 40px;
+const StyledSmallLogo = styled(SmallLogo)`
+  width: 20%;
 `;
 
 const FirstText = styled.div`
@@ -107,6 +111,7 @@ const FirstText = styled.div`
   text-align: center;
   margin: 20px;
   line-height: 3;
+  margin-bottom: 50px;
 `;
 
 export default LoadingPage;

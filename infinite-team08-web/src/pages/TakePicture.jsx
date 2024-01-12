@@ -36,7 +36,7 @@ const MainPageDiv = styled.div`
 
 const StyledSmallLogo = styled(SmallLogo)`
   height: 48px;
-  margin-top: -50px;
+
   margin-bottom: 20px;
 `;
 
