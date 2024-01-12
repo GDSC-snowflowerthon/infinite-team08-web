@@ -127,7 +127,7 @@ const CameraComponent = () => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: "40%" }}
         />
       )}
       {!imageSrc ? (
@@ -175,6 +175,7 @@ const ReCameraButton = styled.button`
 
 const CapturedImage = styled.img`
   width: 100%;
+  height: 40%
 `;
 
 export default CameraComponent;
