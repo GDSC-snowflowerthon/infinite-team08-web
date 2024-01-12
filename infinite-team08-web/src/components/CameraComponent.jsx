@@ -32,19 +32,20 @@ const CameraComponent = () => {
     if (!webcamRef.current) {
       const initialFacingMode = getInitialFacingMode();
       const isUserFacing = initialFacingMode === "user";
-
+  
       const videoConstraints = {
-        facingMode: initialFacingMode,
+        facingMode: 'environment', // 오타 수정
         width: isUserFacing ? 640 : 640,
         height: isUserFacing ? 480 : 480,
         aspectRatio: 4 / 3,
       };
-
+  
       webcamRef.current = new Webcam({
         videoConstraints,
       });
     }
   }, [getInitialFacingMode]);
+  
 
   const capture = useCallback(async () => {
     const capturedImageSrc = webcamRef.current.getScreenshot();
