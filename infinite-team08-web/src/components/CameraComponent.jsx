@@ -37,18 +37,21 @@ const CameraComponent = () => {
     if (!webcamRef.current) {
       const initialFacingMode = getInitialFacingMode();
       const isUserFacing = initialFacingMode === 'user';
-  
+      
       const videoConstraints = {
-        facingMode: initialFacingMode,
-        width: isUserFacing ? 640 : 640, // facingMode에 따라 폭 설정
-        height: isUserFacing ? 480 : 480, // facingMode에 따라 높이 설정
+        facingMode: isMobile() ? "environment" : initialFacingMode, // 모바일인 경우 후면 카메라, 웹인 경우 초기 facingMode
+        width: isUserFacing ? 640 : 640,
+        height: isUserFacing ? 480 : 480,
+        aspectRatio: 4 / 3,
       };
-  
+    
       webcamRef.current = new Webcam({
         videoConstraints,
       });
     }
   }, [getInitialFacingMode]);
+  
+  
   
 
   const capture = useCallback(async () => {
