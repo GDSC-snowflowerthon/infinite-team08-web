@@ -42,28 +42,28 @@ function ShowTwoPictures(props) {
 
 const MainPageDiv = styled.div`
   height: 100vh;
-  width: 100%;
+  width: 90%;
   max-width: 460px;
   margin: 0 auto;
-  background-color: #000;
+  background-color: #000; /* 흰 배경으로 변경 (확인용) */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  position: relative;
+  position: relative; /* position 속성 추가 */
 `;
 
 const ChangedImage = styled.img`
-  width: 90%;
-  height: 30%;
+  width: 100%;
+  height: auto;
   position: relative;
   overflow: hidden;
   border-radius: 10px;
 `;
 
 const ChangedImageContainer = styled.div`
-  width: 90%;
-  height: 30%;
+  width: 100%;
+  height: auto;
   filter: blur(7px);
   position: relative;
   overflow: hidden;
@@ -71,7 +71,7 @@ const ChangedImageContainer = styled.div`
 `;
 
 const CapturedImage = styled.img`
-  width: 90%;
+  width: 100%;
 `;
 
 const GradientOverlay = styled.div`
@@ -90,6 +90,7 @@ const GradientOverlay = styled.div`
 const AttentionText = styled.div`
   background-color: #00ff6d;
   font-weight: 500;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -101,14 +102,15 @@ const AttentionText = styled.div`
 
 const ChangedButton = styled.div`
   color: black;
-  text-align: center;
-  line-height: 38px;
-  font-size: large;
+  text-align: center; // 중요: 수평 가운데 정렬을 위해 추가
+  line-height: 41px; // 중요: 수직 가운데 정렬을 위해 추가 (높이와 같게 설정)
+  font-size: larger;
   font-weight: bolder;
 `;
 
 const StyledSmallLogo = styled(SmallLogo)`
-  width: 10%;
+  width: 20%;
+  
 `;
 
 export default ShowTwoPictures;

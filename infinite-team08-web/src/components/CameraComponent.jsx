@@ -1,4 +1,10 @@
-import React, { useRef, useCallback, useState, useEffect, useContext } from "react";
+import React, {
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+  useContext,
+} from "react";
 import Webcam from "react-webcam";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -100,7 +106,7 @@ const CameraComponent = () => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          style={{ width: "100%", height: window.innerWidth + "px" }} // 가로 길이에 따라 세로 길이 자동 조절
+          style={{ width: "100%" }}
         />
       )}
       {!imageSrc ? (
@@ -148,7 +154,6 @@ const ReCameraButton = styled.button`
 
 const CapturedImage = styled.img`
   width: 100%;
-  height: auto;
 `;
 
 export default CameraComponent;
