@@ -1,4 +1,10 @@
-import React, { useRef, useCallback, useState, useEffect, useContext } from "react";
+import React, {
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+  useContext,
+} from "react";
 import Webcam from "react-webcam";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -32,20 +38,19 @@ const CameraComponent = () => {
     if (!webcamRef.current) {
       const initialFacingMode = getInitialFacingMode();
       const isUserFacing = initialFacingMode === "user";
-  
+
       const videoConstraints = {
-        facingMode: 'environment', // 오타 수정
+        facingMode: { exact: "environment" },
         width: isUserFacing ? 640 : 640,
         height: isUserFacing ? 480 : 480,
         aspectRatio: 4 / 3,
       };
-  
+
       webcamRef.current = new Webcam({
         videoConstraints,
       });
     }
   }, [getInitialFacingMode]);
-  
 
   const capture = useCallback(async () => {
     const capturedImageSrc = webcamRef.current.getScreenshot();
