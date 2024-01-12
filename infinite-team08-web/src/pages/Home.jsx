@@ -4,7 +4,7 @@ import { ReactComponent as Logo } from "../assets/logo.svg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-function Home(props) {
+function Home() {
   const navigate = useNavigate();
   const [doneSpeech, setDoneSpeech] = useState(false);
   const [clickCount, setClickCount] = useState(0); // 클릭 횟수를 추적합니다.
@@ -83,7 +83,7 @@ const MainPageDiv = styled.div`
 
 const StyledLogo = styled(Logo)`
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const FirstText = styled.div`
@@ -119,7 +119,7 @@ const AttentionText = styled.div`
   height: 50px;
 `;
 
-const ChangedButton = styled.text`
+const ChangedButton = styled.div`
   color: black;
   text-align: center; // 중요: 수평 가운데 정렬을 위해 추가
   line-height: 41px; // 중요: 수직 가운데 정렬을 위해 추가 (높이와 같게 설정)

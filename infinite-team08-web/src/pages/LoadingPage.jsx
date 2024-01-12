@@ -17,6 +17,7 @@ function LoadingPage(props) {
     setTransalteDescription,
   } = useContext(ImageContext);
 
+  // 이미지를 text로 바꿔주는 API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,7 +41,7 @@ function LoadingPage(props) {
     fetchData();
   }, []);
 
-  /* 영어 한글로 번역하는 부분 */
+  // 영어 한글로 번역하는 부분
   useEffect(() => {
     const translateRequest = async () => {
       try {

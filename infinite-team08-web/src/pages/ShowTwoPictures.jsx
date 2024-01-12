@@ -97,7 +97,7 @@ const AttentionText = styled.div`
   height: 70px;
 `;
 
-const ChangedButton = styled.text`
+const ChangedButton = styled.div`
   color: black;
   text-align: center; // 중요: 수평 가운데 정렬을 위해 추가
   line-height: 41px; // 중요: 수직 가운데 정렬을 위해 추가 (높이와 같게 설정)
